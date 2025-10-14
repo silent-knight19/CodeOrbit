@@ -12,10 +12,10 @@ yargs(hideBin(process.argv))
   .command(
     "init",
     "Initialize a new git repository",
-    () => {},
+    () => {}, 
     () => {
       initRepo();
-    }
+    } 
   )
   .command(
     "add <file>",

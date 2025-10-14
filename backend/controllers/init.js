@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 async function initRepo(){
-    const repoPath = path.resolve(process.cwd(), ".git");
+    const repoPath = path.resolve(process.cwd(), ".MyGit");
     const commitPath = path.join(repoPath, "commits");
     try{
         await fs.mkdir(repoPath, { recursive: true });

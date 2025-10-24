@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const http = require("http");
 const { Server } = require("socket.io");
+const mainRouter=require("./routes/main.router");
 
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
@@ -88,9 +89,12 @@ function startServer() {
   const app = express();
   const port = process.env.PORT || 3000;
 
-  app.use(bodyParser.json());
+  // Middleware
   app.use(express.json());
   app.use(cors({ origin: "*" }));
+
+  // Routes
+  app.use("/api", mainRouter);
 
   const MONGO_URI = process.env.MONGODB_URI;
 
@@ -103,10 +107,18 @@ function startServer() {
       console.error("Error connecting to MongoDB: ", error);
     });
 
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
+  // 404 handler
+  app.use((req, res) => {
+    res.status(404).json({ message: "Route not found" });
   });
 
+  // Error handling middleware
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: "Something went wrong!" });
+  });
+  
+let user="testuser"
   const server = http.createServer(app);
   const io = new Server(server, {
     cors: {
@@ -119,7 +131,7 @@ function startServer() {
     console.log("A user connected");
 
     socket.on("joinRoom", (userID) => {
-      const user = userID;
+      const user = user;
       console.log("User joined room:", user);
     });
 

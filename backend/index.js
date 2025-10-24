@@ -89,11 +89,9 @@ function startServer() {
   const app = express();
   const port = process.env.PORT || 3000;
 
-  // Middleware
   app.use(express.json());
   app.use(cors({ origin: "*" }));
 
-  // Routes
   app.use("/api", mainRouter);
 
   const MONGO_URI = process.env.MONGODB_URI;
@@ -107,12 +105,9 @@ function startServer() {
       console.error("Error connecting to MongoDB: ", error);
     });
 
-  // 404 handler
   app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
   });
-
-  // Error handling middleware
   app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: "Something went wrong!" });
@@ -140,7 +135,6 @@ let user="testuser"
     });
   });
 
-  // MongoDB connection event handlers
   const db = mongoose.connection;
   db.on('error', (error) => {
     console.error('MongoDB connection error:', error);
@@ -149,7 +143,6 @@ let user="testuser"
   db.once('open', () => {
     console.log('Connected to MongoDB');
     
-    // Start the server only after MongoDB connection is established
     server.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

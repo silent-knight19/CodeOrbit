@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGODB_URI;
 
 let client;
 

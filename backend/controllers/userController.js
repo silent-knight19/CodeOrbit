@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
+var objectId = require("mongodb").ObjectId;
 
 dotenv.config();
 
@@ -16,12 +17,12 @@ async function connectClient() {
     }
 }
 
-const getAllUsers = async (req, res) => {
+async function getAllUsers (req, res) {
   try{
     await connectClient();
     const db = client.db("codeOrbit");
     const userCollection = db.collection("users");
-    const users = await userCollection.find().toArray();
+    const users = await userCollection.find({}).toArray();
     res.json(users);
   }
   catch(error){
@@ -30,7 +31,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const signup = async (req, res) => {
+async function signup (req, res) {
   const { username, email, password } = req.body;
   try {
     await connectClient();
@@ -69,16 +70,60 @@ const signup = async (req, res) => {
   }
 };
 
-const login = (req, res) => {
-  res.send("User login");
+async function login (req, res) {
+  const { email, password } = req.body;
+  try {
+    await connectClient();
+    const db = client.db("codeOrbit");
+    const userCollection = db.collection("users");
+    const user = await userCollection.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "invalid credentials" });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "invalid credentials" });
+    }
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+    res.json({ 
+      token,
+      userId: user._id, 
+      email: user.email,
+      username: user.username
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
-const getAllUsersProfile = (req, res) => {
-  res.send("All users profile");
+async function getUsersProfile (req, res) {
+  const currentId = req.params.id;
+  try{
+    await connectClient();
+    const db = client.db("codeOrbit");
+    const userCollection = db.collection("users");
+    const user = await userCollection.findOne({ _id: new objectId(currentId) });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    res.json({ 
+      message: "User found successfully",
+      user: user
+    });
+  }
+  catch(error){
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
-const updateUserProfile = (req, res) => {
+async function updateUserProfile (req, res) {
   res.send("profile updated");
 };
-const deleteUserProfile = (req, res) => {
+async function deleteUserProfile (req, res) {
   res.send("profile deleted");
 };
 
@@ -86,7 +131,7 @@ module.exports = {
   getAllUsers,
   signup,
   login,
-  getAllUsersProfile,
+  getUsersProfile,
   updateUserProfile,
   deleteUserProfile,
 };

@@ -13,8 +13,8 @@ router.get("/allUsers", userController.getAllUsers);
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/allUsersProfile/:id", userController.getUsersProfile);
-router.put("/updateProfile", userController.updateUserProfile);
-router.delete("/deleteProfile", userController.deleteUserProfile);
+router.put("/updateProfile/:id", userController.updateUserProfile);
+router.delete("/deleteProfile/:id", userController.deleteUserProfile);
 
 // Debug 404 for user routes
 router.use((req, res) => {

@@ -3,16 +3,21 @@ const repoController = require("../controllers/repoController");
 
 const repoRouter = express.Router();
 
-repoRouter.post("/repo/create", repoController.createRepo);
-repoRouter.get("/repo/all", repoController.getAllRepos);
-repoRouter.get("/repo/:id", repoController.fetchRepoById);
-repoRouter.get("/repo/:name", repoController.fetchRepoByName);
-repoRouter.get("/repo/:userId", repoController.fetchRepoForCurrentUser);
-repoRouter.put("/repo/update/:id", repoController.updateRepobyId);
+// Create and list repos
+repoRouter.post("/create", repoController.createRepo);
+repoRouter.get("/all", repoController.getAllRepos);
+
+// Get repos by different identifiers
+repoRouter.get("/id/:id", repoController.fetchRepoById);
+repoRouter.get("/name/:name", repoController.fetchRepoByName);
+repoRouter.get("/user/:userId", repoController.fetchRepoForCurrentUser);
+
+// Update and delete repos
+repoRouter.put("/update/:id", repoController.updateRepobyId);
 repoRouter.patch(
-  "/repo/togglevisibility/:id",
+  "/togglevisibility/:id",
   repoController.togglevisibilityById
 );
-repoRouter.delete("/repo/delete/:id", repoController.deleteRepobyId);
+repoRouter.delete("/delete/:id", repoController.deleteRepobyId);
 module.exports = repoRouter;
 

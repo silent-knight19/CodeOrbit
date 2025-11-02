@@ -14,7 +14,7 @@ const getAllIssues = async (req, res) => {
 const getIssueById = async (req, res) => {
     res.send("Issue fetched successfully");
 };
-module.exports={
+export {
     createIssue,
     updateIssueById,
     deleteIssueById,

@@ -1,8 +1,7 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const { MongoClient } = require("mongodb");
-const dotenv = require("dotenv");
-var objectId = require("mongodb").ObjectId;
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { MongoClient, ObjectId as objectId } from "mongodb";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -211,7 +210,7 @@ async function deleteUserProfile(req, res) {
   }
 }
 
-module.exports = {
+export {
   getAllUsers,
   signup,
   login,

@@ -1,8 +1,8 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { v4: uuidv4 } = require("uuid");
+import { promises as fs } from "fs";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
-async function commitChanges(message) {
+export async function commitChanges(message) {
   const repoPath = path.resolve(process.cwd(), ".MyGit");
   const stagingPath = path.join(repoPath, "staging");
   const commitPath = path.join(repoPath, "commits");
@@ -27,4 +27,3 @@ async function commitChanges(message) {
     console.error("Error committing changes", err);
   }
 }
-module.exports = { commitChanges };

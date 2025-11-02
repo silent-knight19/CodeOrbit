@@ -1,7 +1,7 @@
-const express = require("express");
-const userRouter = require("./user.router");
-const repoRouter = require("./repo.router");
-const issueRouter = require("./issue.router");
+import express from "express";
+import userRouter from "./user.router.js";
+import repoRouter from "./repo.router.js";
+import issueRouter from "./issue.router.js";
 const router = express.Router();
 
 // Debug middleware
@@ -51,4 +51,4 @@ router.use((req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

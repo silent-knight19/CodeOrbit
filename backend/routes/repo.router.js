@@ -1,5 +1,5 @@
-const express = require("express");
-const repoController = require("../controllers/repoController");
+import express from "express";
+import * as repoController from "../controllers/repoController.js";
 
 const repoRouter = express.Router();
 
@@ -19,5 +19,5 @@ repoRouter.patch(
   repoController.togglevisibilityById
 );
 repoRouter.delete("/delete/:id", repoController.deleteRepobyId);
-module.exports = repoRouter;
+export default repoRouter;
 

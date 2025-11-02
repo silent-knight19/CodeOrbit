@@ -1,5 +1,5 @@
-const express = require("express");
-const userController = require("../controllers/userController");
+import express from "express";
+import * as userController from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -22,4 +22,4 @@ router.use((req, res) => {
   res.status(404).json({ message: `User route not found: ${req.method} ${req.originalUrl}` });
 });
 
-module.exports = router;
+export default router;

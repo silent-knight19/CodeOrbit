@@ -1,6 +1,6 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { s3, s3_bucket } = require("../config/aws-config");
+import fs from "fs/promises";
+import path from "path";
+import { s3, s3_bucket } from "../config/aws-config.js";
 
 async function pushChanges() {
     const repoPath = path.resolve(process.cwd(), ".MyGit");
@@ -32,4 +32,4 @@ async function pushChanges() {
         console.error("Error pushing changes", err);
     }
 }
-module.exports={pushChanges};
+export { pushChanges };

@@ -1,6 +1,6 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { s3, S3_BUCKET } = require("../config/aws-config");
+import { promises as fs } from "fs";
+import path from "path";
+import { s3, s3_bucket as S3_BUCKET } from "../config/aws-config.js";
 
 async function pullRepo() {
   const repoPath = path.resolve(process.cwd(), ".apnaGit");
@@ -40,4 +40,4 @@ async function pullRepo() {
   }
 }
 
-module.exports = { pullRepo };
+export { pullRepo };

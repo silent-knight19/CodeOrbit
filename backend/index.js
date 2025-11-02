@@ -1,21 +1,21 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const http = require("http");
-const { Server } = require("socket.io");
-const mainRouter=require("./routes/main.router");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import http from "http";
+import { Server } from "socket.io";
+import mainRouter from "./routes/main.router.js";
 
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
 
-const { initRepo } = require("./controllers/init");
-const { addFiles } = require("./controllers/add");
-const { commitChanges } = require("./controllers/commit");
-const { pushChanges } = require("./controllers/push");
-const { pullChanges } = require("./controllers/pull");
-const { revertChanges } = require("./controllers/revert");
+import { initRepo } from "./controllers/init.js";
+import { addFiles } from "./controllers/add.js";
+import { commitChanges } from "./controllers/commit.js";
+import { pushChanges } from "./controllers/push.js";
+import { pullRepo as pullChanges } from "./controllers/pull.js";
+import { revertChanges } from "./controllers/revert.js";
 
 dotenv.config();
 

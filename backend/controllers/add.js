@@ -1,8 +1,7 @@
-const fs = require("fs").promises;
-const path = require("path");
+import { promises as fs } from "fs";
+import path from "path";
 
-
-async function addFiles(filePath) {
+export async function addFiles(filePath) {
     const repoPath = path.resolve(process.cwd(), ".MyGit");
     const stagingPath = path.join(repoPath, "staging");
 
@@ -18,5 +17,4 @@ async function addFiles(filePath) {
     
    
 }
-module.exports = { addFiles };
    

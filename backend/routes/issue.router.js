@@ -1,5 +1,6 @@
-const express = require("express");
-const issueController = require("../controllers/issueController");
+import express from "express";
+import * as issueController from "../controllers/issueController.js";
+
 const issueRouter = express.Router();
 
 // Create and list issues
@@ -11,4 +12,4 @@ issueRouter.get("/:id", issueController.getIssueById);
 issueRouter.put("/update/:id", issueController.updateIssueById);
 issueRouter.delete("/delete/:id", issueController.deleteIssueById);
 
-module.exports = issueRouter;
+export default issueRouter;

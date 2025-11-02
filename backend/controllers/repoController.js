@@ -1,33 +1,65 @@
-const createRepo = async (req, res) => {
-  res.send("Repo created successfully");
-};
-const getAllRepos = async (req, res) => {
+import mongoose from "mongoose";
+import repos from "../models/repoModel.js";
+import user from "../models/userModel.js";
+import issue from "../models/issueModel.js";
+
+async function createRepo(req, res) {
+  const { userID, repoName, issues, contents, description, visibility } =
+    req.body;
+  try {
+    if (!repoName) {
+      return res.status(400).json({ message: "Repo name is required" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(userID)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+    const newRepo = new repos({
+      name: repoName,
+      user: userID,
+      issues: issues,
+      contents: contents,
+      description: description,
+      visibility: visibility,
+    });
+    const result = await newRepo.save();
+    res
+      .status(201)
+      .json({ message: "Repo created successfully", repoID: result._id });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getAllRepos(req, res) {
   res.send("All repos fetched successfully");
-};
+}
 
-const fetchRepoById = async (req, res) => {
+async function fetchRepoById(req, res) {
   res.send("Repo fetched successfully");
-};
+}
 
-const fetchRepoByName= async (req, res) => {
+async function fetchRepoByName(req, res) {
   res.send("Repo fetched successfully");
-};
+}
 
-const fetchRepoForCurrentUser= async (req, res) => {
+async function fetchRepoForCurrentUser(req, res) {
   res.send("Repo fetched for logged in user successfully");
-};
+}
 
-const updateRepobyId= async (req, res) => {
+async function updateRepobyId(req, res) {
   res.send("Repo updated successfully");
-};
+}
 
-const togglevisibilityById= async (req, res) => {
+async function togglevisibilityById(req, res) {
   res.send("Repo visibility toggled successfully");
-};
-const deleteRepobyId= async (req, res) => {
+}
+
+async function deleteRepobyId(req, res) {
   res.send("Repo deleted successfully");
-};
-module.exports={
+}
+
+export {
   createRepo,
   getAllRepos,
   fetchRepoById,
@@ -35,5 +67,5 @@ module.exports={
   fetchRepoForCurrentUser,
   updateRepobyId,
   togglevisibilityById,
-  deleteRepobyId
+  deleteRepobyId,
 };

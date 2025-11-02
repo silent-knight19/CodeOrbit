@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const issueSchema = new Schema({
-    timestamps:true,
   title: { type: String, required: true },
   description: { type: String, required: true },
   repository: {
@@ -10,8 +9,9 @@ const issueSchema = new Schema({
     ref: "Repository",
     required: true,
   },
-  status: { type: String, enum: ["Open", "Closed"], default: "Open" },
-  
+  status: { type: String, enum: ["Open", "Closed"], default: "Open" }
+}, {
+  timestamps: true
 });
 const Issue = mongoose.model("Issue", issueSchema);
 export default Issue;

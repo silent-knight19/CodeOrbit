@@ -1,7 +1,7 @@
-const fs = require("fs").promises;
-const path = require("path");
+import { promises as fs } from "fs";
+import path from "path";
 
-async function initRepo(){
+export async function initRepo(){
     const repoPath = path.resolve(process.cwd(), ".MyGit");
     const commitPath = path.join(repoPath, "commits");
     try{
@@ -17,4 +17,3 @@ async function initRepo(){
         console.error("Error initializing repository", err);
     }
 }
-module.exports={initRepo};

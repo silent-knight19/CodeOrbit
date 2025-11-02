@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
-const path = require("path");
+import { promises as fs } from "fs";
+import path from "path";
 
 async function revertChanges(commitID) {
   const repoPath = path.resolve(process.cwd(), ".MyGit");
@@ -20,4 +20,4 @@ async function revertChanges(commitID) {
   }
 }
 
-module.exports = { revertChanges };
+export { revertChanges };

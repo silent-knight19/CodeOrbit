@@ -71,7 +71,7 @@ async function signup(req, res) {
 async function login(req, res) {
   const { email, password } = req.body;
   try {
-    await connectClient();
+    await connectClient(); 
     const db = client.db("codeOrbit");
     const userCollection = db.collection("users");
     const user = await userCollection.findOne({ email });

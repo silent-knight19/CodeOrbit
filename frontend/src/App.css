@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #000;
+    color:grey;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: 96px;
+    padding-top: 5%;
+}
+    

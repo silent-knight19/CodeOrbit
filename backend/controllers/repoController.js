@@ -4,22 +4,21 @@ import user from "../models/userModel.js";
 import issue from "../models/issueModel.js";
 
 async function createRepo(req, res) {
-  const { userID, repoName, issues, contents, description, visibility } =
-    req.body;
+  const { name, owner, description, content, visibility, issues = [] } = req.body;
   try {
-    if (!repoName) {
+    if (!name) {
       return res.status(400).json({ message: "Repo name is required" });
     }
-    if (!mongoose.Types.ObjectId.isValid(userID)) {
-      return res.status(400).json({ message: "Invalid user ID" });
+    if (!mongoose.Types.ObjectId.isValid(owner)) {
+      return res.status(400).json({ message: "Invalid owner ID" });
     }
     const newRepo = new repos({
-      name: repoName,
-      user: userID,
-      issues: issues,
-      contents: contents,
-      description: description,
-      visibility: visibility,
+      name,
+      owner,
+      description,
+      content,
+      visibility: visibility !== undefined ? visibility : true,
+      issues
     });
     const result = await newRepo.save();
     res
@@ -93,16 +92,41 @@ async function fetchRepoByName(req, res) {
 }
 
 async function fetchRepoForCurrentUser(req, res) {
-  const userId = req.user;
+  const userId = req.params.userId;
+  console.log(`Fetching repositories for user ID: ${userId}`);
+  
   try {
-    const repo = await repos.find({ owner: userId });
-    if (!repo || repo.length === 0) {
-      return res.status(404).send("No repositories found for current user");
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.error(`Invalid user ID format: ${userId}`);
+      return res.status(400).json({ 
+        success: false,
+        message: "Invalid user ID format" 
+      });
     }
-    return res.status(200).json("repositories found for current user",repo);
+    
+    const message1 = `Searching for repos with owner: ${userId}`;
+    console.log(message1);
+
+    const reposList = await repos.find({ owner: userId });
+    
+    const message2 = `Found ${reposList.length} repositories for user ${userId}`;
+    console.log(message2);
+    
+    return res.status(200).json({
+      success: true,
+      count: reposList.length,
+      data: reposList,
+      logs: [message1, message2]  // Including console messages in response
+    });
+    
   } catch (error) {
-    console.log("error during fetching repo for current user", error);
-    res.status(500).send("error during fetching repo for current user");
+    console.error("Error in fetchRepoForCurrentUser:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Error fetching repositories",
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 }
 

@@ -8,7 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setCurrentUser } = useAuth();
+  const { setcurrentUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -24,12 +24,25 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.userId);
-      setCurrentUser(res.data.userId);
+      setcurrentUser(res.data.userId);
 
       navigate("/");
     } catch (err) {
-      console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Login failed. Please check your email and password.");
+      let errorMessage = 'Login failed. Please check your email and password.';
+      
+      if (err.response) {
+        // Server responded with an error status code
+        errorMessage = err.response.data?.message || `Error: ${err.response.status}`;
+      } else if (err.request) {
+        // Request was made but no response received
+        errorMessage = 'No response from server. Please check your internet connection.';
+      } else {
+        // Something else happened in setting up the request
+        errorMessage = err.message || 'An unexpected error occurred';
+      }
+      
+      console.error('Login error:', err);
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
